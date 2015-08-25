@@ -2,10 +2,19 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # Create your models here.
-class TrainingUser(User):
-    date_updated = models.DateTimeField()
-    study_status = models.BooleanField()
-    supervision = models.BooleanField()
+class TrainingUser(models.Model):
+    # Automatically set this field to now
+    # every time the object is saved or first created.
+    date_updated = models.DateTimeField(auto_now=True)
+    study_status = models.BooleanField(default=False)
+    supervision = models.BooleanField(default=False)
+    website = models.CharField(max_length=255, blank=True)
+    facebook = models.CharField(max_length=255, blank=True)
+    twitter = models.CharField(max_length=255, blank=True)
+    github = models.CharField(max_length=255, blank=True)
+
+    # Connect with User, so we can reuse Django's Authentication System
+    user = models.OneToOneField(User)
     
     # Using string 'Course' because class Course is NOT defined.
     courses = models.ManyToManyField('Course', through='UserCourse')
@@ -13,16 +22,16 @@ class TrainingUser(User):
     tasks = models.ManyToManyField('Task', through='UserTask')
 
     def __str__(self):
-        return self.first_name + self.last_name
+        return self.user.get_full_name()
 
 
 class Course(models.Model):
     name = models.TextField()
     description = models.TextField()
-    date_created = models.DateTimeField()
-    date_updated = models.DateTimeField()
-    date_begin = models.DateTimeField()
-    date_end = models.DateTimeField()
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+    date_begin = models.DateTimeField(null=True)
+    date_end = models.DateTimeField(null=True)
     subjects = models.ManyToManyField('Subject')
 
     def __str__(self):
@@ -32,10 +41,10 @@ class Course(models.Model):
 class Subject(models.Model):
     name = models.TextField()
     description = models.TextField()
-    date_created = models.DateTimeField()
-    date_updated = models.DateTimeField()
-    date_begin = models.DateTimeField()
-    date_end = models.DateTimeField()
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+    date_begin = models.DateTimeField(null=True)
+    date_end = models.DateTimeField(null=True)
 
     def __str__(self):
         return self.name
@@ -44,10 +53,10 @@ class Subject(models.Model):
 class Task(models.Model):
     name = models.TextField()
     description = models.TextField()
-    date_created = models.DateTimeField()
-    date_updated = models.DateTimeField()
-    date_begin = models.DateTimeField()
-    deadline = models.DateTimeField()
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+    date_begin = models.DateTimeField(null=True)
+    deadline = models.DateTimeField(null=True)
     subject = models.ForeignKey(Subject)
 
     def __str__(self):

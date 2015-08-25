@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Courses Training</title>
+    </head>
+    <body>
+        <h1>Register with Courses</h1>
+        {% if register %}
+        <strong>Thank you for registering!</strong>
+        <a href="{% url 'courses:index' %}">Return to the homepage.</a><br/>
+        {% else %}
+        <strong>Courses Register Form</strong>
+        <form id="user_form" method="post" action="{% url 'courses:signup' %}">
+            {% csrf_token %}
+            {{ user_form.as_p }}
+            {{ training_form.as_p }}
+            <input type="submit" name="submit" value="Register" />
+        </form> 
+        {% endif %}
+    </body>
+</html>

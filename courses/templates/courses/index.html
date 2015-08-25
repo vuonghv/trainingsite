@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Courses Training</title>
+    </head>
+    <body>
+        <h1>Courses Training Homepage</h1>
+        {% if user.is_authenticated %}
+        <strong>Hello {{ user.get_full_name }}</strong>
+        <a href="{% url 'courses:logout' %}">Click here to logout</a><br/>
+        {% else %}
+        <a href="{% url 'courses:login' %}">Log In</a><br/>
+        <a href="{% url 'courses:signup' %}">Sign Up</a>
+        {% endif %}
+    </body>
+</html>
