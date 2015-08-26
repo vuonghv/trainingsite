@@ -1,4 +1,4 @@
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -7,15 +7,19 @@ from django.template import RequestContext
 from django.utils import timezone
 
 from .forms import UserForm, TrainingUserForm
+from .forms import UserProfileForm, TrainingUserProfileForm
+from .models import Course, TrainingUser
 
 # Create your views here.
 
 def index(request):
-    return render(request, 'courses/index.html', {'user': request.user})
+    # Retrieve the top 5 only
+    course_list = Course.objects.order_by('date_begin')[:5]
+    context = {'courses': course_list}
+    return render(request, 'courses/index.html', context)
 
 def login_user(request):
-    context = RequestContext(request)
-    
+    # Only process data when receive a POST request
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -36,7 +40,7 @@ def login_user(request):
             return HttpResponse('Invalid username or password!')
 
     else:
-        return render_to_response('courses/login.html', {}, context)
+        return render(request, 'courses/login.html')
     
 @login_required
 def logout_user(request):
@@ -44,9 +48,6 @@ def logout_user(request):
     return HttpResponseRedirect(reverse('courses:index'))
 
 def signup_user(request):
-    # Get the request's context
-    context = RequestContext(request)
-
     # A boolean value for telling the template whether the
     # registration was successful.
     registered = False
@@ -82,12 +83,44 @@ def signup_user(request):
         training_form = TrainingUserForm()
     
     # Render the template depending on the context
-    return render_to_response(
-            'courses/register.html',
-            {
-                'user_form': user_form,
-                'training_form': training_form,
-                'register': registered
-            },
-            context)
+    return render(request, 'courses/register.html',
+                {
+                    'user_form': user_form,
+                    'training_form': training_form,
+                    'register': registered
+                })
             
+@login_required
+def profile(request):
+    user = request.user
+    training_user = user.traininguser
+
+    # update user's data if user click update profile button
+    if request.method == 'POST':
+        user_form = UserProfileForm(data=request.POST,
+                                    instance=user)
+        training_form = TrainingUserProfileForm(data=request.POST,
+                                            instance=training_user)
+        
+        if user_form.is_valid() and training_form.is_valid():
+            user_form.save()
+            training_form.save()
+
+    # if GET request or something else, show user's information
+    else:
+        user_form = UserProfileForm(initial={
+                        'username': user.username,
+                        'email': user.email,
+                        'first_name': user.first_name,
+                        'last_name': user.last_name})
+
+        training_form = TrainingUserProfileForm(initial={
+                        'study_status': training_user.study_status,
+                        'website': training_user.website,
+                        'facebook': training_user.facebook,
+                        'twitter': training_user.twitter,
+                        'github': training_user.github,
+                        'date_updated': training_user.date_updated})
+
+    return render(request, 'courses/user_profile.html',
+                {'user_form': user_form, 'training_form': training_form})

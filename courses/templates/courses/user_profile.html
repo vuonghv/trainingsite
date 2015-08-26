@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Courses Training</title>
+    </head>
+    <body>
+    <h1>Profile of <em>{{ user.get_username }}</em></h1>
+
+        {% if user.is_authenticated %}
+            <a href="{% url 'courses:index' %}">Back Home</a>
+            <a href="{% url 'courses:logout' %}">Logout</a><br/>
+        {% else %}
+            <a href="{% url 'courses:login' %}">Log In</a><br/>
+            <a href="{% url 'courses:signup' %}">Sign Up</a><br/>
+        {% endif %}
+
+        <form method="post" action="{% url 'courses:profile' %}" >
+            {% csrf_token %}
+            {{ user_form.as_p }}
+            {{ training_form.as_p }}
+            <input type="submit" value="Update profile" />
+        </form>
+    </body>
+</html>

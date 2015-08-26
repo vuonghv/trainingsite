@@ -5,12 +5,28 @@
     </head>
     <body>
         <h1>Courses Training Homepage</h1>
+
         {% if user.is_authenticated %}
-        <strong>Hello {{ user.get_full_name }}</strong>
-        <a href="{% url 'courses:logout' %}">Click here to logout</a><br/>
+            <h2>User <strong>{{ user.get_username }}</strong></h2><br />
+            <a href="{% url 'courses:profile' %}">Profile</a>
+            <a href="{% url 'courses:logout' %}">Logout</a><br/>
         {% else %}
-        <a href="{% url 'courses:login' %}">Log In</a><br/>
-        <a href="{% url 'courses:signup' %}">Sign Up</a>
+            <a href="{% url 'courses:login' %}">Log In</a><br/>
+            <a href="{% url 'courses:signup' %}">Sign Up</a><br/>
+        {% endif %}
+
+        {% if courses %}
+            <ul>
+            {% for item in courses %}
+                <li>
+                    {{ item.name }}<br />
+                    <em>{{ item.description }}</em><br />
+                    begin: {{ item.date_begin }}
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <em>There is no courses!</em>
         {% endif %}
     </body>
 </html>
