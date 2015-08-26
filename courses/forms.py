@@ -37,8 +37,12 @@ class TrainingUserProfileForm(forms.ModelForm):
     This form is used for displaying Training User Profile
     """
     # TODO: how to show date_udated with 'editable=False'
+    date_updated = forms.DateTimeField(widget=forms.DateTimeInput())
     class Meta:
         model = TrainingUser
         fields = ('study_status', 'website', 'facebook',
-                    'twitter', 'github')
+                    'twitter', 'github', 'date_updated')
+    
+    class NewMeta:
+        readonly = ('date_updated',)
 

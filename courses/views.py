@@ -106,6 +106,11 @@ def profile(request):
             user_form.save()
             training_form.save()
 
+            # Why cannot update field 'date_update' by using following statement?
+            #training_form.fields['date_updated'].widget.attrs['value'] = training_user.date_updated
+            # So need to reload the page by HttpResponseRedirect
+            return HttpResponseRedirect(reverse('courses:profile'))
+
     # if GET request or something else, show user's information
     else:
         user_form = UserProfileForm(initial={
@@ -122,5 +127,6 @@ def profile(request):
                         'github': training_user.github,
                         'date_updated': training_user.date_updated})
 
+    training_form.fields['date_updated'].widget.attrs['readonly'] = True
     return render(request, 'courses/user_profile.html',
                 {'user_form': user_form, 'training_form': training_form})
