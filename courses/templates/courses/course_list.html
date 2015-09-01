@@ -1,13 +1,13 @@
 {% extends "courses/base.html" %}
 
-{% block title %}OMG! Django{% endblock %}
-
 {% block content %}
+    <p>Courses List Page</p>
+    <p><a href="{% url 'courses:create-course' %}">Create course</a></p>
     {% if courses_list %}
         <ul>
             {% for course in courses_list %}
             <li>
-            <p><a href="{% url 'courses:course-detail' pk=course.pk  %}">{{ course.name }}</a></p>
+                <p><a href="{% url 'courses:course-detail' pk=course.pk  %}">{{ course.name }}</a></p>
                 <em>{{ course.description }}</em> <br />
                 begin: {{ course.date_begin }}<br />
                 end: {{ course.date_end }}

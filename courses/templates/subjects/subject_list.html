@@ -1,0 +1,20 @@
+{% extends "courses/base.html" %}
+
+{% block content %}
+    <h3>Subjects list page</h3>
+    {% if subjects_list %}
+        <ul>
+            {% for subject in subjects_list %}
+            <li>
+                <p><a href="{% url 'courses:subject-detail' pk=subject.pk  %}">{{ subject.name }}</a></p>
+                <em>{{ subject.description }}</em> <br />
+                begin: {{ subject.date_begin }}<br />
+                end: {{ subject.date_end }}
+                <br />
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p><em>There is NO subjects.</em></p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "courses/base.html" %}
+
+{% block greetuser %}
+    <h3>{{ user.username }}'s profile page</h3>
+    <a href="{% url 'courses:index' %}">Home</a>
+    <a href="{% url 'courses:logout' %}">Logout</a>
+{% endblock %}
+
+{% block content %}
+    <form id="user-profile" method="POST" action="{% url 'courses:profile' pk=user.id %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Update Profile" />
+{% endblock %}

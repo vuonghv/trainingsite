@@ -1,0 +1,9 @@
+{% extends "courses/base.html" %}
+
+{% block content %}
+    <h4>{{ subject.name }}</h4>
+    <p>{{ subject.description }}</p>
+    <p>Date Begin: {{ subject.date_begin.date }}</p>
+    <p>Date End: {{ subject.date_end.date }}</p>
+    <p><a href="{% url 'courses:index' %}">Back home</a></p>
+{% endblock %}

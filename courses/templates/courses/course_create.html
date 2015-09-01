@@ -1,0 +1,10 @@
+{% extends "courses/base.html" %}
+
+{% block content %}
+    <h3>Create New Courses</h3>
+    <form id="course-create" method="POST" action="{% url 'courses:create-course' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Submit" />
+    </form>
+{% endblock %}

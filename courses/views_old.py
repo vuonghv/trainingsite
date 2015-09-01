@@ -5,6 +5,9 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.utils import timezone
+from django.views import generic
+
+import datetime
 
 from .forms import UserForm, TrainingUserForm
 from .forms import UserProfileForm, TrainingUserProfileForm
@@ -17,6 +20,7 @@ def index(request):
     course_list = Course.objects.order_by('date_begin')[:5]
     context = {'courses': course_list}
     return render(request, 'courses/index.html', context)
+
 
 def login_user(request):
     # Only process data when receive a POST request

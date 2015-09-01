@@ -1,0 +1,20 @@
+{% extends "courses/base.html" %}
+
+{% block content %}
+    <h4>{{ course.name }}</h4>
+    <p>{{ course.description }}</p>
+    <p>Date Begin: {{ course.date_begin.date }}</p>
+    <p>Date End: {{ course.date_end.date }}</p>
+    {% if subjects_list %}
+        <p>This course includes following subjects:</p>
+        <ul>
+        {% for subject in subjects_list %}
+        <li>
+        <a href="/">{{ subject.name }}</a>:
+        <em>{{ subject.description }}</em>
+        </li>
+        {% endfor %}
+    {% else %}
+        <p><em>Currently, this course has no subjects</em></p>
+    {% endif %}
+{% endblock %}
