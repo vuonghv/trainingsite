@@ -10,5 +10,8 @@
     <form id="user-profile" method="POST" action="{% url 'courses:profile' pk=user.id %}">
     {% csrf_token %}
     {{ form.as_p }}
+    {{ traininguser_profile_form.as_p }}
+    <p>Joined Date: {{ user.date_joined }}</p>
+    <p>Latest Updated: {{ user.traininguser.date_updated }}</p>
     <input type="submit" value="Update Profile" />
 {% endblock %}

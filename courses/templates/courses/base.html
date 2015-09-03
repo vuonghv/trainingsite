@@ -9,6 +9,7 @@
         {% block greetuser %}
             {% if user.is_authenticated %}
                 <h3>User {{ user.username }}</h3>
+                <a href="{% url 'courses:index' %}">Home</a>
                 <a href="{% url 'courses:profile' pk=user.id %}">Profile</a>
                 <a href="{% url 'courses:courses' %}">Courses</a>
                 <a href="{% url 'courses:subjects' %}">Subjects</a>
@@ -16,6 +17,7 @@
                 <br />
             {% else %}
                 <h3>OMG! Django Framework</h3>
+                <a href="{% url 'courses:index' %}">Home</a>
                 <a href="{% url 'courses:login' %}">Log In</a>
                 <a href="{% url 'courses:signup' %}">Sign Up</a>
                 <br />

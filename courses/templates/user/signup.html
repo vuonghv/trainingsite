@@ -1,6 +1,24 @@
+{% extends "courses/base.html" %}
+
+
+{% block greetuser %}
+    <h2>User Register Form</h2>
+{% endblock %}
+
+{% block content %}
+    <form id="user-register-form" method="post" action="{% url 'courses:signup' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {{ traininguser_register_form.as_p }}
+        <input type="submit" name="submit" value="Register" />
+    </form>
+{% endblock %}
+<!--
 <h1>Training Site</h1>
 <form id="user_form" method="post" action="{% url 'courses:signup' %}">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" name="submit" value="Register" />
 </form>
+-->
+

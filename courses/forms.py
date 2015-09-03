@@ -14,10 +14,12 @@ class UserForm(forms.ModelForm):
         fields = ('username', 'email', 'password', 'first_name', 'last_name')
 
 
-class TrainingUserForm(forms.ModelForm):
+class TrainingUserCreationForm(forms.ModelForm):
     """
     This form is used for displaying Sign training user up
     """
+    #website = forms.URLField(widget=forms.URLInput())
+
     class Meta:
         model = TrainingUser
         fields = ('website', 'github', 'twitter')
@@ -37,12 +39,8 @@ class TrainingUserProfileForm(forms.ModelForm):
     This form is used for displaying Training User Profile
     """
     # TODO: how to show date_udated with 'editable=False'
-    date_updated = forms.DateTimeField(widget=forms.DateTimeInput())
+    #date_updated = forms.DateTimeField(widget=forms.DateTimeInput())
     class Meta:
         model = TrainingUser
         fields = ('study_status', 'website', 'facebook',
-                    'twitter', 'github', 'date_updated')
-    
-    class NewMeta:
-        readonly = ('date_updated',)
-
+                    'twitter', 'github')

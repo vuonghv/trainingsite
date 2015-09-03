@@ -5,5 +5,7 @@
     <p>{{ subject.description }}</p>
     <p>Date Begin: {{ subject.date_begin.date }}</p>
     <p>Date End: {{ subject.date_end.date }}</p>
+    <p><a href="{% url 'courses:subject-update' pk=subject.pk %}">Edit subject</a>
+    <br /><br /><br />
     <p><a href="{% url 'courses:index' %}">Back home</a></p>
 {% endblock %}

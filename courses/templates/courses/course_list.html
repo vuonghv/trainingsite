@@ -1,8 +1,8 @@
 {% extends "courses/base.html" %}
 
 {% block content %}
-    <p>Courses List Page</p>
-    <p><a href="{% url 'courses:create-course' %}">Create course</a></p>
+    <h3>Courses List Page</h3>
+    <p><a href="{% url 'courses:create-course' %}">Create a new course</a></p>
     {% if courses_list %}
         <ul>
             {% for course in courses_list %}

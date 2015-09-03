@@ -1,0 +1,10 @@
+{% extends "courses/base.html" %}
+
+{% block content %}
+<h3>Edit subject: {{ subject.name }}</h3>
+<form id="subject-update" method="POST" action="{% url 'courses:subject-update' pk=subject.pk %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Update subject"/>
+</form>
+{% endblock %}

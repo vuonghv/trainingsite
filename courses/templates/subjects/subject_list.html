@@ -2,6 +2,7 @@
 
 {% block content %}
     <h3>Subjects list page</h3>
+    <p><a href="{% url 'courses:create-subject' %}">Create a new subject</a></p>
     {% if subjects_list %}
         <ul>
             {% for subject in subjects_list %}

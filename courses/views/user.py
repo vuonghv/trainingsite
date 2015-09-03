@@ -15,27 +15,46 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.decorators import method_decorator
 
 from courses.models import TrainingUser
+from courses.forms import TrainingUserCreationForm, TrainingUserProfileForm
 
-class UserSignup(generic.CreateView):
+#class UserSignup(generic.CreateView):
+#    model = User
+#    form_class = UserCreationForm
+#    template_name = 'user/signup.html'
+#    success_url = reverse_lazy('courses:index')
+#
+#    def get_context_data(self, **kwargs):
+#        # Call the base implementation first to get a context
+#        context = super(UserSignup, self).get_context_data(**kwargs)
+#        return context
+#
+#    def form_valid(self, form):
+#        return super(UserSignup, self).form_valid(form)
+
+
+class UserSignup(generic.edit.CreateView):
     model = User
-    #fields = ['username', 'email', 'twitter']
     form_class = UserCreationForm
-    template_name = 'user/signup.html'
     success_url = reverse_lazy('courses:index')
+    template_name = 'user/signup.html'
 
     def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
+        # Callthe base implementation first to get the acontext
         context = super(UserSignup, self).get_context_data(**kwargs)
-        context['user_form'] = UserCreationForm()
+        context['traininguser_register_form'] = TrainingUserCreationForm()
         return context
 
     def form_valid(self, form):
         """
-        training_user = TrainingUser.objects.create()
-        training_user.save()
-        form.instance.training_user = training_user
+        If form is valid, save the associated model object
         """
-        return super(UserSignup, self).form_valid(form)
+        self.object = form.save()
+        traininguser_form = TrainingUserCreationForm(data=self.request.POST)
+        traininguser = traininguser_form.save(commit=False)
+        traininguser.user = self.object
+        traininguser.save()
+
+        return HttpResponseRedirect(self.get_success_url())
 
 
 def login_user(request):
@@ -79,13 +98,35 @@ def logout_user(request):
 class UserProfileView(UpdateView):
     model = User
     template_name = 'user/profile.html'
-    #form_class = UserChangeForm
     fields = ['username', 'email', 'first_name',
-            'last_name', 'date_joined']
+            'last_name']
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(UserProfileView, self).dispatch(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        # Callthe base implementation first to get the acontext
+        context = super(UserProfileView, self).get_context_data(**kwargs)
+
+        # TODO: why cannot display fields: 'study_status' and 'facebook'?
+        context['traininguser_profile_form'] = TrainingUserProfileForm(
+                                                 instance=self.object.traininguser)
+        return context
+
+    def form_valid(self, form):
+        """
+        Update associated model and redirect to the success_url
+        """
+        self.object = form.save()
+        training_form = TrainingUserProfileForm(self.request.POST,
+                                            instance=self.object.traininguser)
+        try:
+            training_form.save()
+        except ValueError:
+            print(training_form.errors)
+
+        return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
         return reverse_lazy('courses:profile',

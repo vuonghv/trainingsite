@@ -5,12 +5,13 @@
     <p>{{ course.description }}</p>
     <p>Date Begin: {{ course.date_begin.date }}</p>
     <p>Date End: {{ course.date_end.date }}</p>
+    <p><a href="{% url 'courses:course-update' pk=course.pk %}">Edit course</a></p>
     {% if subjects_list %}
         <p>This course includes following subjects:</p>
         <ul>
         {% for subject in subjects_list %}
         <li>
-        <a href="/">{{ subject.name }}</a>:
+        <a href="{% url 'courses:subject-detail' pk=subject.pk %}">{{ subject.name }}</a>:
         <em>{{ subject.description }}</em>
         </li>
         {% endfor %}

@@ -53,6 +53,9 @@ class Subject(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('courses:subject-detail', kwargs={'pk': self.pk})
+
 
 class Task(models.Model):
     name = models.TextField()
