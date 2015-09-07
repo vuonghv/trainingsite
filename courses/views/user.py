@@ -109,7 +109,6 @@ class UserProfileView(UpdateView):
         # Callthe base implementation first to get the acontext
         context = super(UserProfileView, self).get_context_data(**kwargs)
 
-        # TODO: why cannot display fields: 'study_status' and 'facebook'?
         context['traininguser_profile_form'] = TrainingUserProfileForm(
                                                  instance=self.object.traininguser)
         return context
@@ -123,6 +122,7 @@ class UserProfileView(UpdateView):
                                             instance=self.object.traininguser)
         try:
             training_form.save()
+        import pdb; pdb.set_trace()  # XXX BREAKPOINT
         except ValueError:
             print(training_form.errors)
 
